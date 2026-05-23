@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/m0ntydad0n/sovereignty/schemas/measured-exposure-report.schema.json",
+  "title": "Sovereignty Measured Exposure Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "trust_model",
+    "classification",
+    "verifier_id",
+    "observed_request_count",
+    "transmitted_byte_count",
+    "evidence",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "0.1"},
+    "trust_model": {"type": "string", "const": "measured"},
+    "classification": {
+      "type": "string",
+      "enum": ["raw", "excerpt", "summary", "none", "unknown"]
+    },
+    "verifier_id": {"type": "string", "minLength": 1},
+    "observed_request_count": {"type": "integer", "minimum": 0},
+    "transmitted_byte_count": {"type": "integer", "minimum": 0},
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "local_input_digest",
+        "request_digests",
+        "observed_methods",
+        "observed_url_schemes"
+      ],
+      "properties": {
+        "local_input_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "request_digests": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+        },
+        "observed_methods": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        },
+        "observed_url_schemes": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    }
+  }
+}

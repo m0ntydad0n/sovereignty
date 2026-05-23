@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/m0ntydad0n/sovereignty/schemas/review-packet.schema.json",
+  "title": "Sovereignty Review Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "packet_id",
+    "lane",
+    "action",
+    "local_output",
+    "model_metadata",
+    "exposure",
+    "side_effects",
+    "review_required"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "0.1"},
+    "packet_id": {"type": "string", "minLength": 1},
+    "lane": {"type": "string", "minLength": 1},
+    "action": {"type": "string", "minLength": 1},
+    "local_output": true,
+    "model_metadata": {
+      "type": "object",
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)(api[_-]?key|apikey|token|password|secret|base[_-]?url|endpoint|path)"
+        }
+      }
+    },
+    "exposure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "trust_model"],
+      "properties": {
+        "classification": {
+          "type": "string",
+          "enum": ["raw", "excerpt", "summary", "none", "unknown"]
+        },
+        "trust_model": {
+          "type": "string",
+          "enum": ["caller_attested", "measured", "not_applicable"]
+        },
+        "evidence": {"type": ["string", "object", "null"]}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"trust_model": {"const": "measured"}},
+            "required": ["trust_model"]
+          },
+          "then": {"required": ["evidence"]}
+        }
+      ]
+    },
+    "side_effects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "effect_id",
+          "effect_type",
+          "tool",
+          "intent",
+          "target",
+          "payload",
+          "risk"
+        ],
+        "properties": {
+          "effect_id": {"type": "string", "minLength": 1},
+          "effect_type": {"type": "string", "minLength": 1},
+          "tool": {"type": "string", "minLength": 1},
+          "intent": {"type": "string", "minLength": 1},
+          "target": {"type": "object"},
+          "payload": {"type": "object"},
+          "risk": {"type": "string", "enum": ["low", "medium", "high"]}
+        }
+      }
+    },
+    "review_required": {"type": "boolean"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"side_effects": {"minItems": 1}},
+        "required": ["side_effects"]
+      },
+      "then": {
+        "properties": {"review_required": {"const": true}},
+        "required": ["review_required"]
+      }
+    }
+  ]
+}

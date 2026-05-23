@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/m0ntydad0n/sovereignty/schemas/side-effect-proposal.schema.json",
+  "title": "Sovereignty Side-Effect Proposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "effect_id",
+    "effect_type",
+    "tool",
+    "intent",
+    "target",
+    "payload",
+    "risk"
+  ],
+  "properties": {
+    "effect_id": {"type": "string", "minLength": 1},
+    "effect_type": {"type": "string", "minLength": 1},
+    "tool": {"type": "string", "minLength": 1},
+    "intent": {"type": "string", "minLength": 1},
+    "target": {"type": "object"},
+    "payload": {"type": "object"},
+    "risk": {"type": "string", "enum": ["low", "medium", "high"]}
+  }
+}

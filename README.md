@@ -45,6 +45,7 @@ sovereignty/
   SPEC.md                 # Local-prep / cloud-authority protocol
   THREAT_MODEL.md         # Assumptions, non-goals, failure modes
   docs/measured-exposure.md # Evidence-backed exposure report shape
+  schemas/                # Language-agnostic JSON Schema contracts
   src/sovereignty/        # Reference Python implementation
   examples/hermes/        # Hermes local-router adapter example
   tests/                  # Contract tests
@@ -90,6 +91,17 @@ Sovereignty's first CLI commands are protocol utilities, not router commands:
 
 - `validate packet.json` validates a review packet and returns a JSON status object.
 - `redact metadata.json` removes secrets, host-local URLs, and private paths from model metadata.
+
+## JSON Schema contracts
+
+Language-agnostic schemas live in `schemas/`:
+
+- `schemas/review-packet.schema.json`
+- `schemas/exposure.schema.json`
+- `schemas/measured-exposure-report.schema.json`
+- `schemas/side-effect-proposal.schema.json`
+
+These schemas mirror the v0.1 protocol surface for non-Python validators and integrations.
 
 ## License
 

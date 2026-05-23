@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/m0ntydad0n/sovereignty/schemas/exposure.schema.json",
+  "title": "Sovereignty Exposure",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["classification", "trust_model"],
+  "properties": {
+    "classification": {
+      "type": "string",
+      "enum": ["raw", "excerpt", "summary", "none", "unknown"]
+    },
+    "trust_model": {
+      "type": "string",
+      "enum": ["caller_attested", "measured", "not_applicable"]
+    },
+    "evidence": {
+      "type": ["string", "object", "null"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"trust_model": {"const": "measured"}},
+        "required": ["trust_model"]
+      },
+      "then": {"required": ["evidence"]}
+    }
+  ]
+}

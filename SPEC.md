@@ -34,6 +34,13 @@ A Sovereignty review packet MUST include:
 
 A packet MUST NOT include API keys, bearer tokens, local base URLs, absolute private paths, environment variables, or raw secret values in `model_metadata`.
 
+The canonical machine-readable v0.1 contracts are published under `schemas/`:
+
+- `schemas/review-packet.schema.json`
+- `schemas/exposure.schema.json`
+- `schemas/measured-exposure-report.schema.json`
+- `schemas/side-effect-proposal.schema.json`
+
 ## 4. Exposure classes
 
 `exposure.classification` MUST be one of:
