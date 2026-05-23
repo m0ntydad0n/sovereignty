@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/m0ntydad0n/sovereignty/schemas/guardrail-event.schema.json",
+  "title": "Sovereignty Guardrail Event",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "not": {"pattern": "(?i)^(prompt|response|request_body|response_body|blocked_text)$"}
+  },
+  "required": ["schema_version", "event_id", "policy_id", "stage", "status", "started_at", "ended_at", "duration_ms"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "0.1"},
+    "event_id": {"type": "string", "minLength": 1},
+    "policy_id": {"type": "string", "minLength": 1},
+    "stage": {"type": "string", "enum": ["pre_local", "post_local", "pre_authority", "post_authority"]},
+    "status": {"type": "string", "enum": ["passed", "intervened", "failed_to_respond", "not_run"]},
+    "started_at": {"type": "string", "format": "date-time"},
+    "ended_at": {"anyOf": [{"type": "string", "format": "date-time"}, {"type": "null"}]},
+    "duration_ms": {"anyOf": [{"type": "number", "minimum": 0}, {"type": "null"}]},
+    "guardrail_name": {"type": "string", "minLength": 1},
+    "masked_entity_counts": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "intervention_type": {"type": "string", "enum": ["none", "blocked", "modified", "escalated"]}
+  }
+}

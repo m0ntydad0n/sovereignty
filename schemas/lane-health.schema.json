@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/m0ntydad0n/sovereignty/schemas/lane-health.schema.json",
+  "title": "Sovereignty Lane Health",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "lane", "status", "checked_at"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "0.1"},
+    "lane": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["healthy", "degraded", "cooldown", "unavailable"]},
+    "checked_at": {"type": "string", "format": "date-time"},
+    "latency_ms": {"type": "number", "minimum": 0},
+    "last_success_at": {"type": "string", "format": "date-time"},
+    "last_failure_class": {"type": "string", "minLength": 1},
+    "cooldown_until": {"type": "string", "format": "date-time"},
+    "concurrency_limit": {"type": "integer", "minimum": 1}
+  }
+}

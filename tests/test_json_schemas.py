@@ -77,6 +77,8 @@ def test_all_public_schema_files_exist_and_are_valid_json_schema():
         "packet-telemetry.schema.json",
         "side-effect-review-record.schema.json",
         "policy.schema.json",
+        "guardrail-event.schema.json",
+        "lane-health.schema.json",
     ]:
         load_schema(name)
 

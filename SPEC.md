@@ -43,6 +43,8 @@ The canonical machine-readable v0.1 contracts are published under `schemas/`:
 - `schemas/packet-telemetry.schema.json`
 - `schemas/side-effect-review-record.schema.json`
 - `schemas/policy.schema.json`
+- `schemas/guardrail-event.schema.json`
+- `schemas/lane-health.schema.json`
 
 ## 4. Packet telemetry
 
@@ -92,7 +94,11 @@ Authority-side review metadata belongs in a separate side-effect review record. 
 
 Policies distinguish caller/local-lane metadata from authority/verifier metadata. A caller or local lane MUST NOT grant itself trusted `policy_tags`, `budget_tags`, `authority_tags`, `trust_tags`, or similar policy-affecting labels. Measured exposure claims MUST use a trusted verifier ID when policy requires measured evidence. Policies MAY cap cloud exposure classification, forbid high-risk side-effect types, and enforce risk floors so local lanes cannot understate proposal risk. See `docs/policy.md` and `schemas/policy.schema.json`.
 
-## 8. Non-goals
+## 8. Operational records
+
+Implementations MAY emit guardrail events and lane health records. These records are metadata-only operational artifacts: guardrail events describe stage/status/intervention metadata without raw blocked text, and lane health describes local runtime availability without provider credentials or private endpoints. See `docs/operations.md`, `schemas/guardrail-event.schema.json`, and `schemas/lane-health.schema.json`.
+
+## 9. Non-goals
 
 Sovereignty is not:
 
@@ -101,7 +107,7 @@ Sovereignty is not:
 - a guarantee that a local model is safe or correct;
 - a replacement for human review for high-risk domains.
 
-## 9. Compatibility
+## 10. Compatibility
 
 Implementations SHOULD be easy to integrate with:
 

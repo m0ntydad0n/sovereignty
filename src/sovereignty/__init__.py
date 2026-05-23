@@ -1,6 +1,8 @@
 __version__ = "0.1.0"
 
 from .exposure import Exposure
+from .guardrails import GuardrailEvent, validate_guardrail_event
+from .lane_health import LaneHealth, validate_lane_health
 from .measured_exposure import (
     RecordedRequest,
     RecordingBoundary,
@@ -16,6 +18,8 @@ from .telemetry import PacketTelemetry, build_error_digest, validate_packet_tele
 __all__ = [
     "__version__",
     "Exposure",
+    "GuardrailEvent",
+    "LaneHealth",
     "RecordedRequest",
     "RecordingBoundary",
     "ReviewPacket",
@@ -27,6 +31,8 @@ __all__ = [
     "build_error_digest",
     "build_measured_exposure_report",
     "redact_model_metadata",
+    "validate_guardrail_event",
+    "validate_lane_health",
     "validate_packet",
     "validate_packet_dict",
     "validate_packet_telemetry",
