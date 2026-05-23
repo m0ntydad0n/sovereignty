@@ -135,8 +135,9 @@ Language-agnostic schemas live in `schemas/`:
 - `schemas/policy.schema.json`
 - `schemas/guardrail-event.schema.json`
 - `schemas/lane-health.schema.json`
+- `schemas/exposure-budget.schema.json`
 
-These schemas mirror the v0.1 protocol surface for non-Python validators and integrations. Packet telemetry is documented in `docs/telemetry.md` and is metadata-only by default. Side-effect review records are documented in `docs/side-effect-review.md` and remain separate from local-lane side-effect proposals. Policy-origin validation is documented in `docs/policy.md`. Guardrail events and lane health are documented in `docs/operations.md`.
+These schemas mirror the v0.1 protocol surface for non-Python validators and integrations. Packet telemetry is documented in `docs/telemetry.md` and is metadata-only by default. Side-effect review records are documented in `docs/side-effect-review.md` and remain separate from local-lane side-effect proposals. Policy-origin validation and exposure budgets are documented in `docs/policy.md`. Guardrail events and lane health are documented in `docs/operations.md`.
 
 ## Release path
 

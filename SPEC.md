@@ -45,6 +45,7 @@ The canonical machine-readable v0.1 contracts are published under `schemas/`:
 - `schemas/policy.schema.json`
 - `schemas/guardrail-event.schema.json`
 - `schemas/lane-health.schema.json`
+- `schemas/exposure-budget.schema.json`
 
 ## 4. Packet telemetry
 
@@ -92,7 +93,7 @@ Authority-side review metadata belongs in a separate side-effect review record. 
 
 ## 7. Policy-origin validation
 
-Policies distinguish caller/local-lane metadata from authority/verifier metadata. A caller or local lane MUST NOT grant itself trusted `policy_tags`, `budget_tags`, `authority_tags`, `trust_tags`, or similar policy-affecting labels. Measured exposure claims MUST use a trusted verifier ID when policy requires measured evidence. Policies MAY cap cloud exposure classification, forbid high-risk side-effect types, and enforce risk floors so local lanes cannot understate proposal risk. See `docs/policy.md` and `schemas/policy.schema.json`.
+Policies distinguish caller/local-lane metadata from authority/verifier metadata. A caller or local lane MUST NOT grant itself trusted `policy_tags`, `budget_tags`, `authority_tags`, `trust_tags`, or similar policy-affecting labels. Measured exposure claims MUST use a trusted verifier ID when policy requires measured evidence. Policies MAY cap cloud exposure classification, forbid high-risk side-effect types, and enforce risk floors so local lanes cannot understate proposal risk. Exposure budgets MAY additionally cap exposed token estimates, side-effect proposal counts, local latency, and raw/unknown exposure. See `docs/policy.md`, `schemas/policy.schema.json`, and `schemas/exposure-budget.schema.json`.
 
 ## 8. Operational records
 

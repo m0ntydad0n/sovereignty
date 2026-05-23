@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/m0ntydad0n/sovereignty/schemas/exposure-budget.schema.json",
+  "title": "Sovereignty Exposure Budget",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "budget_id", "max_cloud_exposure_classification"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "0.1"},
+    "budget_id": {"type": "string", "minLength": 1},
+    "max_cloud_exposure_classification": {"type": "string", "enum": ["none", "summary", "excerpt", "raw"]},
+    "max_exposed_tokens_estimated": {"type": "integer", "minimum": 0},
+    "max_raw_cloud_tokens_per_run": {"type": "integer", "minimum": 0},
+    "max_unmeasured_packets_per_day": {"type": "integer", "minimum": 0},
+    "max_side_effect_proposals_per_packet": {"type": "integer", "minimum": 0},
+    "max_local_latency_ms": {"type": "number", "minimum": 0},
+    "require_measured_for_privacy_claims": {"type": "boolean"}
+  }
+}

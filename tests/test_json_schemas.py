@@ -79,6 +79,7 @@ def test_all_public_schema_files_exist_and_are_valid_json_schema():
         "policy.schema.json",
         "guardrail-event.schema.json",
         "lane-health.schema.json",
+        "exposure-budget.schema.json",
     ]:
         load_schema(name)
 

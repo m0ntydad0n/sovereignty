@@ -54,6 +54,41 @@ It can also enforce risk floors. For example, if `send_message` has a `medium` f
 
 Risk floors do not approve side effects. They only prevent local lanes from understating risk.
 
+## Exposure budgets
+
+Exposure budgets adapt budget discipline to privacy and authority boundaries rather than provider spend.
+
+Schema: `schemas/exposure-budget.schema.json`
+Python helper: `sovereignty.ExposureBudget`
+
+Budgets can enforce:
+
+- maximum cloud exposure classification (`none`, `summary`, `excerpt`, or `raw`);
+- maximum estimated exposed cloud tokens;
+- maximum raw cloud tokens per run;
+- maximum unmeasured packets per day;
+- maximum side-effect proposals per packet;
+- maximum local lane latency;
+- whether privacy claims require measured exposure.
+
+`unknown` exposure fails closed by default. A packet with `raw` exposure fails if the budget maximum is `summary`; telemetry with exposed-token estimates above the budget fails; and caller-attested exposure fails when measured exposure is required.
+
+Example budget:
+
+```json
+{
+  "schema_version": "0.1",
+  "budget_id": "privacy-default",
+  "max_cloud_exposure_classification": "summary",
+  "max_exposed_tokens_estimated": 500,
+  "max_raw_cloud_tokens_per_run": 0,
+  "max_unmeasured_packets_per_day": 0,
+  "max_side_effect_proposals_per_packet": 1,
+  "max_local_latency_ms": 10000,
+  "require_measured_for_privacy_claims": true
+}
+```
+
 ## Example policy
 
 ```json
