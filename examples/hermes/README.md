@@ -21,7 +21,8 @@ It demonstrates:
 - a main Hermes agent reviewing the packet before any side effect;
 - exposure classification with `trust_model="measured"`;
 - a strict review-only side-effect proposal for creating an issue;
-- a `RecordingBoundary` measured exposure report attached beside the packet.
+- a `RecordingBoundary` measured exposure report attached beside the packet;
+- metadata-only packet telemetry that references the packet without logging raw context or local output.
 
 Run it from the repository root:
 

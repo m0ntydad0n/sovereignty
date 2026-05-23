@@ -4,7 +4,20 @@ import subprocess
 import sys
 from pathlib import Path
 
+from jsonschema import Draft202012Validator
+
 from sovereignty import validate_packet_dict
+
+
+def _load_schema(name: str) -> dict:
+    with (ROOT / "schemas" / name).open() as handle:
+        schema = json.load(handle)
+    Draft202012Validator.check_schema(schema)
+    return schema
+
+
+def _validate_schema(name: str, instance: dict) -> None:
+    Draft202012Validator(_load_schema(name)).validate(instance)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,6 +50,35 @@ def test_real_hermes_local_router_example_emits_valid_review_packet():
     assert packet.exposure.trust_model == "measured"
     assert packet.review_required is True
     assert packet.side_effects[0]["effect_type"] == "create_issue"
+
+
+def test_real_hermes_local_router_example_emits_valid_packet_telemetry():
+    payload = _run_example()
+    telemetry = payload["packet_telemetry"]
+
+    _validate_schema("packet-telemetry.schema.json", telemetry)
+    assert telemetry["packet_id"] == payload["review_packet"]["packet_id"]
+    assert telemetry["adapter"] == "hermes-local-router"
+    assert telemetry["lane"] == "hermes.local_router.coder"
+    assert telemetry["privacy"] == {
+        "metadata_only": True,
+        "raw_payload_logged": False,
+        "local_output_logged": False,
+    }
+
+
+def test_real_hermes_local_router_example_telemetry_contains_no_raw_input_or_local_output():
+    payload = _run_example()
+    rendered = json.dumps(payload["packet_telemetry"], sort_keys=True)
+
+    assert "LOCAL RAW INCIDENT" not in rendered
+    assert "retry loop after failed issue sync" not in rendered
+    assert "raw request bodies" not in rendered
+    assert "api.example.invalid" not in rendered
+    assert "/Users/" not in rendered
+    assert "localhost" not in rendered
+    assert "127.0.0.1" not in rendered
+    assert "base_url" not in rendered
 
 
 def test_real_hermes_local_router_example_includes_measured_report_without_raw_or_private_infra():

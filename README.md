@@ -45,6 +45,7 @@ sovereignty/
   SPEC.md                 # Local-prep / cloud-authority protocol
   THREAT_MODEL.md         # Assumptions, non-goals, failure modes
   docs/measured-exposure.md # Evidence-backed exposure report shape
+  docs/telemetry.md         # Metadata-only packet telemetry contract
   docs/protocol-not-gateway.md # Why this is a protocol, not a gateway
   docs/release-checklist.md # v0.1.0 package/release checklist
   schemas/                # Language-agnostic JSON Schema contracts
@@ -97,7 +98,7 @@ Run the Hermes local-router integration example:
 PYTHONPATH=src .venv/bin/python examples/hermes/local_router_review_packet.py
 ```
 
-The local-router integration demonstrates a local prep lane producing a review packet with measured exposure evidence and a review-only side-effect proposal for the main Hermes agent.
+The local-router integration demonstrates a local prep lane producing a review packet with measured exposure evidence, metadata-only packet telemetry, and a review-only side-effect proposal for the main Hermes agent.
 
 Validate a packet JSON file:
 
@@ -126,8 +127,9 @@ Language-agnostic schemas live in `schemas/`:
 - `schemas/exposure.schema.json`
 - `schemas/measured-exposure-report.schema.json`
 - `schemas/side-effect-proposal.schema.json`
+- `schemas/packet-telemetry.schema.json`
 
-These schemas mirror the v0.1 protocol surface for non-Python validators and integrations.
+These schemas mirror the v0.1 protocol surface for non-Python validators and integrations. Packet telemetry is documented in `docs/telemetry.md` and is metadata-only by default.
 
 ## Release path
 

@@ -18,10 +18,11 @@ Run from the repository root:
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from typing import Any
 from uuid import uuid4
 
-from sovereignty import Exposure, RecordingBoundary, ReviewPacket, validate_packet
+from sovereignty import Exposure, PacketTelemetry, RecordingBoundary, ReviewPacket, validate_packet
 
 LOCAL_CONTEXT = """
 LOCAL RAW INCIDENT: traceback shows a write path retry loop after a failed
@@ -54,6 +55,7 @@ def local_prep_lane(raw_context: str) -> dict[str, Any]:
 
 
 def build_review_packet() -> tuple[dict[str, Any], dict[str, Any]]:
+    started_at = datetime.now(timezone.utc)
     local_output = local_prep_lane(LOCAL_CONTEXT)
     side_effect_proposal = {
         "effect_id": "effect_create_issue_001",
@@ -119,9 +121,40 @@ def build_review_packet() -> tuple[dict[str, Any], dict[str, Any]]:
         reviewer_body,
     )
     measured_report = boundary.report(drop_observed_bodies=True)
+    ended_at = datetime.now(timezone.utc)
+    duration_ms = max(0.0, (ended_at - started_at).total_seconds() * 1000)
+    telemetry = PacketTelemetry(
+        run_id=f"run_{uuid4().hex}",
+        packet_id=packet.packet_id,
+        trace_id=f"trace_{uuid4().hex}",
+        adapter="hermes-local-router",
+        lane="hermes.local_router.coder",
+        action="code_triage",
+        status="success",
+        status_fields={
+            "local_lane_status": "success",
+            "guardrail_status": "not_run",
+            "exposure_status": "measured",
+            "side_effect_status": "proposed_pending_review",
+        },
+        timing={
+            "started_at": started_at.isoformat().replace("+00:00", "Z"),
+            "ended_at": ended_at.isoformat().replace("+00:00", "Z"),
+            "duration_ms": duration_ms,
+        },
+        token_accounting={
+            "raw_input_tokens_estimated": len(LOCAL_CONTEXT.split()),
+            "local_output_tokens_estimated": len(json.dumps(local_output).split()),
+            "exposed_to_cloud_tokens_estimated": len(reviewer_body.decode("utf-8").split()),
+            "kept_local_tokens_estimated": max(
+                0, len(LOCAL_CONTEXT.split()) - len(json.dumps(local_output).split())
+            ),
+        },
+    )
 
     return {
         "review_packet": packet.to_dict(),
+        "packet_telemetry": telemetry.to_dict(),
         "transport_response": transport_response,
         "hermes_mapping": {
             "local prep lane": "Hermes local-router worker performs code triage only",

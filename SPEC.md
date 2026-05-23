@@ -40,8 +40,17 @@ The canonical machine-readable v0.1 contracts are published under `schemas/`:
 - `schemas/exposure.schema.json`
 - `schemas/measured-exposure-report.schema.json`
 - `schemas/side-effect-proposal.schema.json`
+- `schemas/packet-telemetry.schema.json`
 
-## 4. Exposure classes
+## 4. Packet telemetry
+
+A local-prep run MAY emit packet telemetry beside the review packet. Packet telemetry is metadata-only operational evidence for status, timing, token estimates, privacy flags, and digest-only errors.
+
+Telemetry MUST NOT include raw prompts, local outputs, request or response bodies, stdout/stderr, credentials, private paths, host-local URLs, local base URLs, endpoints, or raw tracebacks.
+
+Packet telemetry does not approve side effects and does not replace exposure evidence. It references the review packet by `packet_id` and records whether exposure was measured, caller-attested, unknown, or not applicable. See `docs/telemetry.md` and `schemas/packet-telemetry.schema.json`.
+
+## 5. Exposure classes
 
 `exposure.classification` MUST be one of:
 
@@ -59,7 +68,7 @@ The canonical machine-readable v0.1 contracts are published under `schemas/`:
 
 Caller-attested exposure is useful for plumbing but MUST NOT be marketed as proof.
 
-## 5. Side-effect boundary
+## 6. Side-effect boundary
 
 Local lanes MUST NOT perform side effects. If a local lane believes a side effect is needed, it MUST include a proposed side effect in the review packet and set `review_required` to true.
 
@@ -75,7 +84,7 @@ A proposed side effect MUST be an object with these fields:
 
 A proposed side effect MUST NOT contain execution or approval state such as `executed_at`, `execution_id`, `execution_result`, `approved_at`, `approved_by`, `result`, or `status`. The main agent or human reviewer is responsible for approving, denying, transforming, or executing proposed side effects under its own tool policy.
 
-## 6. Non-goals
+## 7. Non-goals
 
 Sovereignty is not:
 
@@ -84,7 +93,7 @@ Sovereignty is not:
 - a guarantee that a local model is safe or correct;
 - a replacement for human review for high-risk domains.
 
-## 7. Compatibility
+## 8. Compatibility
 
 Implementations SHOULD be easy to integrate with:
 
