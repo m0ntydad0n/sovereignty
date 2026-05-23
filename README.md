@@ -46,6 +46,7 @@ sovereignty/
   THREAT_MODEL.md         # Assumptions, non-goals, failure modes
   docs/measured-exposure.md # Evidence-backed exposure report shape
   docs/telemetry.md         # Metadata-only packet telemetry contract
+  docs/side-effect-review.md # Authority-side side-effect review records
   docs/protocol-not-gateway.md # Why this is a protocol, not a gateway
   docs/release-checklist.md # v0.1.0 package/release checklist
   schemas/                # Language-agnostic JSON Schema contracts
@@ -128,8 +129,9 @@ Language-agnostic schemas live in `schemas/`:
 - `schemas/measured-exposure-report.schema.json`
 - `schemas/side-effect-proposal.schema.json`
 - `schemas/packet-telemetry.schema.json`
+- `schemas/side-effect-review-record.schema.json`
 
-These schemas mirror the v0.1 protocol surface for non-Python validators and integrations. Packet telemetry is documented in `docs/telemetry.md` and is metadata-only by default.
+These schemas mirror the v0.1 protocol surface for non-Python validators and integrations. Packet telemetry is documented in `docs/telemetry.md` and is metadata-only by default. Side-effect review records are documented in `docs/side-effect-review.md` and remain separate from local-lane side-effect proposals.
 
 ## Release path
 

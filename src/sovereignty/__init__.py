@@ -9,6 +9,7 @@ from .measured_exposure import (
 from .packet import ReviewPacket, validate_packet, validate_packet_dict
 from .policy import SovereigntyPolicyError
 from .redaction import redact_model_metadata
+from .side_effect_review import SideEffectReviewRecord, validate_side_effect_review_record
 from .side_effects import SideEffectProposal, validate_side_effect_proposal
 from .telemetry import PacketTelemetry, build_error_digest, validate_packet_telemetry
 
@@ -19,6 +20,7 @@ __all__ = [
     "RecordingBoundary",
     "ReviewPacket",
     "SideEffectProposal",
+    "SideEffectReviewRecord",
     "PacketTelemetry",
     "SovereigntyPolicyError",
     "build_error_digest",
@@ -28,4 +30,5 @@ __all__ = [
     "validate_packet_dict",
     "validate_packet_telemetry",
     "validate_side_effect_proposal",
+    "validate_side_effect_review_record",
 ]

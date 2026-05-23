@@ -41,6 +41,7 @@ The canonical machine-readable v0.1 contracts are published under `schemas/`:
 - `schemas/measured-exposure-report.schema.json`
 - `schemas/side-effect-proposal.schema.json`
 - `schemas/packet-telemetry.schema.json`
+- `schemas/side-effect-review-record.schema.json`
 
 ## 4. Packet telemetry
 
@@ -83,6 +84,8 @@ A proposed side effect MUST be an object with these fields:
 - `risk`: one of `low`, `medium`, or `high`
 
 A proposed side effect MUST NOT contain execution or approval state such as `executed_at`, `execution_id`, `execution_result`, `approved_at`, `approved_by`, `result`, or `status`. The main agent or human reviewer is responsible for approving, denying, transforming, or executing proposed side effects under its own tool policy.
+
+Authority-side review metadata belongs in a separate side-effect review record. A review record MAY document `review_decision`, `reviewer_type`, `reviewed_at`, and `execution_status`, plus digest-only references for modified payloads, results, or notes. It MUST NOT add approval or execution fields back into the local-lane proposal object. See `docs/side-effect-review.md` and `schemas/side-effect-review-record.schema.json`.
 
 ## 7. Non-goals
 
