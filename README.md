@@ -55,6 +55,39 @@ sovereignty/
 4. Review packets are structured, versioned, and validated.
 5. Privacy/security claims should be falsifiable, not vibes.
 
+## Quick start
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install --upgrade pip pytest
+.venv/bin/python -m pytest tests -q
+```
+
+Create a basic review packet:
+
+```bash
+.venv/bin/python examples/basic_packet.py
+```
+
+Validate a packet JSON file:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m sovereignty validate packet.json
+```
+
+Redact model metadata:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m sovereignty redact metadata.json
+```
+
+## CLI
+
+Sovereignty's first CLI commands are protocol utilities, not router commands:
+
+- `validate packet.json` validates a review packet and returns a JSON status object.
+- `redact metadata.json` removes secrets, host-local URLs, and private paths from model metadata.
+
 ## License
 
 Apache-2.0. Sovereignty is intended to remain open source.
