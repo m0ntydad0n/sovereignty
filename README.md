@@ -30,6 +30,7 @@ Sovereignty is not an LLM gateway. It is a contract for local-prep / cloud-autho
 - local lanes do not invoke side-effecting tools;
 - model and lane metadata is redacted before it leaves the local boundary;
 - cloud exposure claims are explicit about their trust model;
+- measured exposure reports can attach evidence without leaking raw prompts or endpoints;
 - callers can validate packets and policies before a main agent acts.
 
 ## Status
@@ -42,6 +43,7 @@ Early v0.1 scaffold. The current goal is a small, falsifiable core: schema, poli
 sovereignty/
   SPEC.md                 # Local-prep / cloud-authority protocol
   THREAT_MODEL.md         # Assumptions, non-goals, failure modes
+  docs/measured-exposure.md # Evidence-backed exposure report shape
   src/sovereignty/        # Reference Python implementation
   examples/hermes/        # Hermes local-router adapter example
   tests/                  # Contract tests
