@@ -42,6 +42,7 @@ The canonical machine-readable v0.1 contracts are published under `schemas/`:
 - `schemas/side-effect-proposal.schema.json`
 - `schemas/packet-telemetry.schema.json`
 - `schemas/side-effect-review-record.schema.json`
+- `schemas/policy.schema.json`
 
 ## 4. Packet telemetry
 
@@ -87,7 +88,11 @@ A proposed side effect MUST NOT contain execution or approval state such as `exe
 
 Authority-side review metadata belongs in a separate side-effect review record. A review record MAY document `review_decision`, `reviewer_type`, `reviewed_at`, and `execution_status`, plus digest-only references for modified payloads, results, or notes. It MUST NOT add approval or execution fields back into the local-lane proposal object. See `docs/side-effect-review.md` and `schemas/side-effect-review-record.schema.json`.
 
-## 7. Non-goals
+## 7. Policy-origin validation
+
+Policies distinguish caller/local-lane metadata from authority/verifier metadata. A caller or local lane MUST NOT grant itself trusted `policy_tags`, `budget_tags`, `authority_tags`, `trust_tags`, or similar policy-affecting labels. Measured exposure claims MUST use a trusted verifier ID when policy requires measured evidence. Policies MAY cap cloud exposure classification, forbid high-risk side-effect types, and enforce risk floors so local lanes cannot understate proposal risk. See `docs/policy.md` and `schemas/policy.schema.json`.
+
+## 8. Non-goals
 
 Sovereignty is not:
 
@@ -96,7 +101,7 @@ Sovereignty is not:
 - a guarantee that a local model is safe or correct;
 - a replacement for human review for high-risk domains.
 
-## 8. Compatibility
+## 9. Compatibility
 
 Implementations SHOULD be easy to integrate with:
 

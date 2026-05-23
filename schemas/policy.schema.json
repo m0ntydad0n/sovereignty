@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/m0ntydad0n/sovereignty/schemas/policy.schema.json",
+  "title": "Sovereignty Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_id",
+    "trusted_verifier_ids",
+    "max_cloud_exposure_classification",
+    "require_measured_exposure_for_privacy_claims",
+    "trusted_metadata_origins",
+    "forbidden_client_metadata_keys",
+    "forbidden_side_effect_types",
+    "risk_floor_by_effect_type"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "0.1"},
+    "policy_id": {"type": "string", "minLength": 1},
+    "trusted_verifier_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "max_cloud_exposure_classification": {
+      "type": "string",
+      "enum": ["none", "summary", "excerpt", "raw"]
+    },
+    "require_measured_exposure_for_privacy_claims": {"type": "boolean"},
+    "trusted_metadata_origins": {
+      "type": "array",
+      "items": {"type": "string", "enum": ["authority", "verifier"]},
+      "uniqueItems": true
+    },
+    "forbidden_client_metadata_keys": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "forbidden_side_effect_types": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "risk_floor_by_effect_type": {
+      "type": "object",
+      "additionalProperties": {"type": "string", "enum": ["low", "medium", "high"]}
+    }
+  }
+}

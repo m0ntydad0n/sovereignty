@@ -76,6 +76,7 @@ def test_all_public_schema_files_exist_and_are_valid_json_schema():
         "measured-exposure-report.schema.json",
         "packet-telemetry.schema.json",
         "side-effect-review-record.schema.json",
+        "policy.schema.json",
     ]:
         load_schema(name)
 
