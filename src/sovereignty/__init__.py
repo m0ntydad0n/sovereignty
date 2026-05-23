@@ -1,5 +1,5 @@
 from .exposure import Exposure
-from .packet import ReviewPacket, validate_packet
+from .packet import ReviewPacket, validate_packet, validate_packet_dict
 from .policy import SovereigntyPolicyError
 from .redaction import redact_model_metadata
 
@@ -9,4 +9,5 @@ __all__ = [
     "SovereigntyPolicyError",
     "redact_model_metadata",
     "validate_packet",
+    "validate_packet_dict",
 ]
