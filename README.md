@@ -1,6 +1,26 @@
 # Sovereignty
 
-Local models do the prep. Your agent keeps authority.
+```text
+                         .-.
+                        /___\
+                       (|o o|)
+                    .--.\_-_/ .--.
+                   /  _  '-'  _  \
+                  /__/ |     | \__\
+                  |  | |     | |  |
+                  |__| |_____| |__|
+                       /  |  \
+                      /___|___\
+
+   ______                               _             __
+  / ___/ /___ _   _____  ________  (_)___ _____  / /___  __
+  \__ \/ __ \ | / / _ \/ ___/ _ \/ / __ `/ __ \/ __/ / / /
+ ___/ / /_/ / |/ /  __/ /  /  __/ / /_/ / / / / /_/ /_/ /
+/____/\____/|___/\___/_/   \___/_/\__, /_/ /_/\__/\__, /
+                                  /____/          /____/
+
+        local models do the prep. your agent keeps authority.
+```
 
 Sovereignty is an open-source protocol and reference implementation for local-first agent delegation. It defines how local model lanes can perform private prep work — classification, extraction, drafting, code triage, and sensitivity checks — while a main agent retains authority over final answers and side effects.
 
