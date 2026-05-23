@@ -49,7 +49,7 @@ sovereignty/
   docs/release-checklist.md # v0.1.0 package/release checklist
   schemas/                # Language-agnostic JSON Schema contracts
   src/sovereignty/        # Reference Python implementation
-  examples/hermes/        # Hermes local-router adapter example
+  examples/hermes/        # Hermes local-router adapter examples
   tests/                  # Contract tests
 ```
 
@@ -90,6 +90,14 @@ Run the measured-exposure recording boundary example:
 ```bash
 .venv/bin/python examples/recording_boundary.py
 ```
+
+Run the Hermes local-router integration example:
+
+```bash
+PYTHONPATH=src .venv/bin/python examples/hermes/local_router_review_packet.py
+```
+
+The local-router integration demonstrates a local prep lane producing a review packet with measured exposure evidence and a review-only side-effect proposal for the main Hermes agent.
 
 Validate a packet JSON file:
 
