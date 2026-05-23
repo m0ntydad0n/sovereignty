@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/m0ntydad0n/sovereignty/schemas/packet-telemetry.schema.json",
+  "title": "Sovereignty Packet Telemetry",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)^(messages|response|prompt|completion|stdout|stderr|raw_input|raw_output|request_body|response_body|api[_-]?key|token|secret|password|base[_-]?url|endpoint|path)$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "packet_id",
+    "trace_id",
+    "adapter",
+    "lane",
+    "action",
+    "status",
+    "status_fields",
+    "timing",
+    "token_accounting",
+    "privacy"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "0.1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "packet_id": {"type": "string", "minLength": 1},
+    "trace_id": {"type": "string", "minLength": 1},
+    "consumer_session_id": {"type": "string", "minLength": 1},
+    "adapter": {"type": "string", "minLength": 1},
+    "lane": {"type": "string", "minLength": 1},
+    "action": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["success", "failure", "timeout", "policy_blocked"]},
+    "status_fields": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["local_lane_status", "guardrail_status", "exposure_status", "side_effect_status"],
+      "properties": {
+        "local_lane_status": {"type": "string", "enum": ["success", "failure", "timeout", "not_run"]},
+        "guardrail_status": {"type": "string", "enum": ["success", "guardrail_intervened", "guardrail_failed_to_respond", "not_run"]},
+        "exposure_status": {"type": "string", "enum": ["measured", "caller_attested", "not_applicable", "unknown"]},
+        "side_effect_status": {"type": "string", "enum": ["proposed_none", "proposed_pending_review", "reviewed", "blocked", "not_applicable"]}
+      }
+    },
+    "timing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["started_at", "ended_at", "duration_ms"],
+      "properties": {
+        "started_at": {"type": "string", "format": "date-time"},
+        "ended_at": {"anyOf": [{"type": "string", "format": "date-time"}, {"type": "null"}]},
+        "duration_ms": {"anyOf": [{"type": "number", "minimum": 0}, {"type": "null"}]}
+      }
+    },
+    "token_accounting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "raw_input_tokens_estimated",
+        "local_output_tokens_estimated",
+        "exposed_to_cloud_tokens_estimated",
+        "kept_local_tokens_estimated"
+      ],
+      "properties": {
+        "raw_input_tokens_estimated": {"type": "integer", "minimum": 0},
+        "local_output_tokens_estimated": {"type": "integer", "minimum": 0},
+        "exposed_to_cloud_tokens_estimated": {"type": "integer", "minimum": 0},
+        "kept_local_tokens_estimated": {"type": "integer", "minimum": 0}
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metadata_only", "raw_payload_logged", "local_output_logged"],
+      "properties": {
+        "metadata_only": {"type": "boolean", "const": true},
+        "raw_payload_logged": {"type": "boolean", "const": false},
+        "local_output_logged": {"type": "boolean", "const": false}
+      }
+    },
+    "cost_accounting": {
+      "type": "object",
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)(api[_-]?key|token|secret|password|base[_-]?url|endpoint|path|messages|response|prompt|completion|stdout|stderr|raw[_-]?input|raw[_-]?output|request[_-]?body|response[_-]?body)"
+        }
+      },
+      "additionalProperties": {"type": ["string", "number", "integer", "boolean", "null"]}
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["error_class"],
+      "properties": {
+        "error_class": {"type": "string", "minLength": 1},
+        "error_message_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    }
+  }
+}
