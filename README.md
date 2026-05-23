@@ -73,6 +73,12 @@ Create a basic review packet:
 .venv/bin/python examples/basic_packet.py
 ```
 
+Run the measured-exposure recording boundary example:
+
+```bash
+.venv/bin/python examples/recording_boundary.py
+```
+
 Validate a packet JSON file:
 
 ```bash

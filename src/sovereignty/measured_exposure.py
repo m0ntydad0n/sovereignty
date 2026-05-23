@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any, Iterable
 from urllib.parse import urlparse
@@ -21,6 +22,46 @@ class RecordedRequest:
     method: str
     url: str
     body: bytes = b""
+
+
+class RecordingBoundary:
+    """Minimal adapter wrapper for measured exposure prototypes.
+
+    The boundary records method, URL, and request body before forwarding the
+    request to an injected transport callable. Reports omit raw bodies and URLs;
+    callers can also drop retained raw bodies after reporting.
+    """
+
+    def __init__(
+        self,
+        *,
+        local_input: str,
+        transport: Callable[[str, str, bytes], Any],
+        verifier_id: str = DEFAULT_VERIFIER_ID,
+    ) -> None:
+        self.local_input = local_input
+        self.transport = transport
+        self.verifier_id = verifier_id
+        self.observed_requests: list[RecordedRequest] = []
+
+    def request(self, method: str, url: str, body: bytes | str = b"") -> Any:
+        body_bytes = body.encode("utf-8") if isinstance(body, str) else body
+        observed = RecordedRequest(method=method, url=url, body=body_bytes)
+        self.observed_requests.append(observed)
+        return self.transport(method, url, body_bytes)
+
+    def report(self, *, drop_observed_bodies: bool = False) -> dict[str, Any]:
+        report = build_measured_exposure_report(
+            local_input=self.local_input,
+            observed_requests=self.observed_requests,
+            verifier_id=self.verifier_id,
+        )
+        if drop_observed_bodies:
+            self.observed_requests = [
+                RecordedRequest(method=request.method, url=request.url, body=b"")
+                for request in self.observed_requests
+            ]
+        return report
 
 
 class _ClassificationRank:

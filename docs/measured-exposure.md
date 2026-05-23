@@ -11,7 +11,7 @@ Measured exposure is stronger than caller-attested exposure, but it is not magic
 
 The first verifier should be a local recording boundary: a recording proxy, test harness, or adapter wrapper that sits between a local lane and any cloud model endpoint. It records request metadata and request-body digests, then emits a report. The report must avoid copying raw prompts, request bodies, API keys, hostnames, base URLs, local paths, or tokens.
 
-The reference Python helper is `build_measured_exposure_report`.
+The reference Python helper is `build_measured_exposure_report`. For an end-to-end adapter-wrapper prototype, use `RecordingBoundary`: it observes method, URL, and request body before an injected transport callable runs, then emits the same measured exposure report shape.
 
 ```python
 from sovereignty import RecordedRequest, build_measured_exposure_report
@@ -27,6 +27,26 @@ report = build_measured_exposure_report(
     ],
 )
 ```
+
+Adapter-wrapper prototype:
+
+```python
+from sovereignty import RecordingBoundary
+
+local_input = "private source material"
+
+
+def transport(method: str, url: str, body: bytes):
+    # Call requests/httpx/urllib here in a real adapter.
+    return {"status": 200}
+
+
+boundary = RecordingBoundary(local_input=local_input, transport=transport)
+boundary.request("POST", "https://cloud.example/v1/chat/completions", b"prompt bytes")
+report = boundary.report(drop_observed_bodies=True)
+```
+
+A runnable version lives at `examples/recording_boundary.py`.
 
 ## Verifier report shape
 
@@ -75,6 +95,8 @@ Measured exposure assumes:
 2. the local lane routed all relevant cloud-bound traffic through that verifier;
 3. the verifier saw request bodies before transport encryption, or it wrapped the adapter before the HTTP client;
 4. the report was produced before untrusted code could mutate the evidence.
+
+`RecordingBoundary` satisfies only the adapter-wrapper version of this model: it observes calls made through its injected `transport` callable. It does not intercept direct socket calls, browser traffic, subprocesses, DNS, plugins, or any request path that bypasses the wrapper.
 
 If any of these assumptions is false, the report should be treated as incomplete evidence, not proof.
 
