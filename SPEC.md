@@ -56,7 +56,17 @@ Caller-attested exposure is useful for plumbing but MUST NOT be marketed as proo
 
 Local lanes MUST NOT perform side effects. If a local lane believes a side effect is needed, it MUST include a proposed side effect in the review packet and set `review_required` to true.
 
-The main agent or human reviewer is responsible for approving, denying, or transforming proposed side effects.
+A proposed side effect MUST be an object with these fields:
+
+- `effect_id`: stable identifier unique within the packet
+- `effect_type`: action category, such as `send_message`, `write_file`, `create_issue`, or `deploy`
+- `tool`: requested authority-bearing tool or integration
+- `intent`: human-readable reason for the proposed action
+- `target`: object describing the destination without requiring secrets
+- `payload`: object containing the proposed arguments/content for review
+- `risk`: one of `low`, `medium`, or `high`
+
+A proposed side effect MUST NOT contain execution or approval state such as `executed_at`, `execution_id`, `execution_result`, `approved_at`, `approved_by`, `result`, or `status`. The main agent or human reviewer is responsible for approving, denying, transforming, or executing proposed side effects under its own tool policy.
 
 ## 6. Non-goals
 

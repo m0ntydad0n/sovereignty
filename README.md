@@ -31,6 +31,7 @@ Sovereignty is not an LLM gateway. It is a contract for local-prep / cloud-autho
 - model and lane metadata is redacted before it leaves the local boundary;
 - cloud exposure claims are explicit about their trust model;
 - measured exposure reports can attach evidence without leaking raw prompts or endpoints;
+- proposed side effects use a strict review-only schema before any authority-bearing tool acts;
 - callers can validate packets and policies before a main agent acts.
 
 ## Status

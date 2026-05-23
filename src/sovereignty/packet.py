@@ -7,6 +7,7 @@ from typing import Any, Mapping
 from .exposure import Exposure
 from .policy import SovereigntyPolicyError
 from .redaction import redact_model_metadata
+from .side_effects import validate_side_effect_proposals
 
 
 @dataclass
@@ -75,6 +76,7 @@ def validate_packet(packet: ReviewPacket) -> ReviewPacket:
         raise SovereigntyPolicyError("action is required")
     if packet.side_effects and not packet.review_required:
         raise SovereigntyPolicyError("review_required must be true when side_effects are proposed")
+    packet.side_effects = validate_side_effect_proposals(packet.side_effects)
     packet.model_metadata = redact_model_metadata(packet.model_metadata)
     return packet
 
