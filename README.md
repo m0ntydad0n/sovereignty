@@ -24,7 +24,7 @@
 
 Sovereignty is an open-source protocol and reference implementation for local-first agent delegation. It defines how local model lanes can perform private prep work — classification, extraction, drafting, code triage, and sensitivity checks — while a main agent retains authority over final answers and side effects.
 
-Sovereignty is not an LLM gateway. It is a contract for local-prep / cloud-authority workflows:
+Sovereignty is not an LLM gateway. It is a contract for local-prep / cloud-authority workflows; see `docs/protocol-not-gateway.md` for the design note on why this is a protocol, not a gateway:
 
 - local lanes produce structured review packets;
 - local lanes do not invoke side-effecting tools;
@@ -45,6 +45,7 @@ sovereignty/
   SPEC.md                 # Local-prep / cloud-authority protocol
   THREAT_MODEL.md         # Assumptions, non-goals, failure modes
   docs/measured-exposure.md # Evidence-backed exposure report shape
+  docs/protocol-not-gateway.md # Why this is a protocol, not a gateway
   docs/release-checklist.md # v0.1.0 package/release checklist
   schemas/                # Language-agnostic JSON Schema contracts
   src/sovereignty/        # Reference Python implementation

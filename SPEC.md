@@ -91,3 +91,5 @@ Implementations SHOULD be easy to integrate with:
 - local model runtimes such as Ollama, llama.cpp, vLLM, and OpenAI-compatible local endpoints;
 - agent frameworks and CLIs;
 - existing gateways such as LiteLLM as transport layers.
+
+For the positioning rationale and concrete comparison dimensions, see `docs/protocol-not-gateway.md`. Sovereignty is meant to compose with gateways rather than replace their provider-routing, retry, cost, and observability responsibilities.
