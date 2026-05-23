@@ -1,15 +1,44 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "sovereignty"
+name = "sovereignty-protocol"
 version = "0.1.0"
 description = "Local-first agent delegation protocol and reference implementation"
 readme = "README.md"
 requires-python = ">=3.11"
-license = {text = "Apache-2.0"}
+license = "Apache-2.0"
 authors = [{name = "Sovereignty contributors"}]
+keywords = ["agents", "local-first", "llm", "privacy", "protocol", "router"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Security",
+  "Typing :: Typed",
+]
 dependencies = []
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0", "jsonschema>=4.0"]
+dev = ["pytest>=8.0", "jsonschema>=4.0", "build>=1.0", "twine>=5.0"]
+
+[project.scripts]
+sovereignty = "sovereignty.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/m0ntydad0n/sovereignty"
+Repository = "https://github.com/m0ntydad0n/sovereignty"
+Issues = "https://github.com/m0ntydad0n/sovereignty/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+sovereignty = ["py.typed"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

@@ -45,6 +45,7 @@ sovereignty/
   SPEC.md                 # Local-prep / cloud-authority protocol
   THREAT_MODEL.md         # Assumptions, non-goals, failure modes
   docs/measured-exposure.md # Evidence-backed exposure report shape
+  docs/release-checklist.md # v0.1.0 package/release checklist
   schemas/                # Language-agnostic JSON Schema contracts
   src/sovereignty/        # Reference Python implementation
   examples/hermes/        # Hermes local-router adapter example
@@ -63,8 +64,18 @@ sovereignty/
 
 ```bash
 python3 -m venv .venv
-.venv/bin/python -m pip install --upgrade pip pytest
+.venv/bin/python -m pip install --upgrade pip
+.venv/bin/python -m pip install -e '.[dev]'
 .venv/bin/python -m pytest tests -q
+```
+
+The PyPI distribution name is `sovereignty-protocol` because `sovereignty` is already taken on PyPI. The import package and CLI command remain `sovereignty`.
+
+Install from a local checkout:
+
+```bash
+python3 -m pip install -e .
+sovereignty --help
 ```
 
 Create a basic review packet:
@@ -82,13 +93,13 @@ Run the measured-exposure recording boundary example:
 Validate a packet JSON file:
 
 ```bash
-PYTHONPATH=src .venv/bin/python -m sovereignty validate packet.json
+sovereignty validate packet.json
 ```
 
 Redact model metadata:
 
 ```bash
-PYTHONPATH=src .venv/bin/python -m sovereignty redact metadata.json
+sovereignty redact metadata.json
 ```
 
 ## CLI
@@ -108,6 +119,10 @@ Language-agnostic schemas live in `schemas/`:
 - `schemas/side-effect-proposal.schema.json`
 
 These schemas mirror the v0.1 protocol surface for non-Python validators and integrations.
+
+## Release path
+
+The v0.1.0 release checklist lives at `docs/release-checklist.md`. `python -m build` is part of CI, and the package is published under the distribution name `sovereignty-protocol` while preserving the `sovereignty` import package and CLI.
 
 ## License
 

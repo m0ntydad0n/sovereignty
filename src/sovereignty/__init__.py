@@ -1,3 +1,5 @@
+__version__ = "0.1.0"
+
 from .exposure import Exposure
 from .measured_exposure import (
     RecordedRequest,
@@ -10,6 +12,7 @@ from .redaction import redact_model_metadata
 from .side_effects import SideEffectProposal, validate_side_effect_proposal
 
 __all__ = [
+    "__version__",
     "Exposure",
     "RecordedRequest",
     "RecordingBoundary",
