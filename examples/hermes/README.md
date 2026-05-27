@@ -18,8 +18,12 @@ This is an adapter example, not the core product. The core product is the packet
 It demonstrates:
 
 - a local prep lane inspecting raw context and returning a `ReviewPacket`;
+- the current live lane map: route / classify / extract and thread-packet on local-extractor / llama3.2:3b, draft on local-writer / qwen3-coder-local, and code_plan / code_review / traceback on local-coder / qwen3-coder-local;
+- current Hermes tool metadata including sanitized `worker_profile`, `model_used`, `lane_model_map`, and `raw_context_seen_by_cloud=false`;
 - a main Hermes agent reviewing the packet before any side effect;
 - exposure classification with `trust_model="measured"`;
+- strict `actual_avoided_cloud_tokens` accounting only for pre-cloud/local-ingress flows, with potential savings kept separate;
+- operational dashboard metric names such as router-era saved, 24h saved, 7d saved, `local_worker_tokens`, and `router_era_frontier_tokens`;
 - a strict review-only side-effect proposal for creating an issue;
 - a `RecordingBoundary` measured exposure report attached beside the packet;
 - metadata-only packet telemetry that references the packet without logging raw context or local output.

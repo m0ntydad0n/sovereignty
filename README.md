@@ -50,6 +50,7 @@ sovereignty/
   docs/policy.md            # Policy-origin validation and exposure/side-effect gates
   docs/operations.md        # Guardrail events and lane health records
   docs/protocol-not-gateway.md # Why this is a protocol, not a gateway
+  docs/current-router-compatibility.md # Current Hermes local-router adapter boundary
   docs/release-checklist.md # v0.1.0 package/release checklist
   schemas/                # Language-agnostic JSON Schema contracts
   src/sovereignty/        # Reference Python implementation
@@ -64,6 +65,27 @@ sovereignty/
 3. Exposure accounting must state whether it is measured or caller-attested.
 4. Review packets are structured, versioned, and validated.
 5. Privacy/security claims should be falsifiable, not vibes.
+
+## First public proof
+
+The v0.1 proof is intentionally narrow: a local lane reads raw diagnostic context, emits a compact `ReviewPacket`, attaches measured exposure evidence, and proposes a side effect that remains review-only until the authority-bearing agent acts.
+
+Run it from a checkout:
+
+```bash
+PYTHONPATH=src .venv/bin/python examples/hermes/local_router_review_packet.py
+```
+
+What to look for in the JSON output:
+
+- `review_packet.local_output` contains the compact local summary, not the raw incident text.
+- `review_packet.model_metadata` keeps sanitized `worker_profile`, `model_used`, and `lane_model_map` fields, without base URLs, host paths, or tokens.
+- `review_packet.exposure.trust_model` is `measured`, and the attached `measured_exposure_report` avoids raw request bodies.
+- `packet_telemetry.token_accounting` separates estimated local/input/output counts from exposed-to-cloud counts.
+- `current_router_compatibility.actual_avoided_cloud_tokens` is only claimed for the pre-cloud/local-ingress shape where `raw_context_seen_by_cloud=false`.
+- Side effects are proposals only; the local lane cannot create issues, send messages, publish, deploy, trade, pay, or order.
+
+That is the positioning wedge: LiteLLM, Portkey, and RouteLLM are useful gateway/routing layers; Sovereignty is the local-prep / cloud-authority contract around what local workers may prepare, what evidence crosses the boundary, and who is allowed to act.
 
 ## Quick start
 

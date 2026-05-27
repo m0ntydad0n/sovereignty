@@ -27,7 +27,7 @@ packet = ReviewPacket(
         "provider": "ollama",
         "model": "qwen3:8b",
         "base_url": "http://localhost:11434/v1",
-        "api_key": "sk-not-real",
+        "api_key": "***",
     },
     exposure=Exposure(
         classification="summary",

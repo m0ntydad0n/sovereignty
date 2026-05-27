@@ -28,7 +28,32 @@ LOCAL_CONTEXT = """
 LOCAL RAW INCIDENT: traceback shows a write path retry loop after a failed
 issue sync. The local lane may summarize the bug and propose an issue, but it
 must not create the issue itself.
+
+Trace excerpt, intentionally kept local in this example:
+- sync_issue() attempted create_issue after a transient network failure.
+- retry_issue_sync() retried with the same payload three times.
+- mark_review_required() was skipped because the retry path reused a stale state object.
+- proposed remediation is to stop automated issue creation until the main agent reviews source.
+- this private raw diagnostic text should be summarized into a compact review packet, not sent whole.
 """.strip()
+
+CURRENT_ROUTER_MODEL_USED = {
+    "profile": "local-coder",
+    "provider": "custom:local",
+    "model": "qwen3-coder-local",
+    "context_length": 32768,
+}
+
+CURRENT_ROUTER_LANE_MODEL_MAP = {
+    "route": "local-extractor / llama3.2:3b",
+    "classify": "local-extractor / llama3.2:3b",
+    "extract": "local-extractor / llama3.2:3b",
+    "thread-packet": "local-extractor / llama3.2:3b",
+    "draft": "local-writer / qwen3-coder-local",
+    "code_plan": "local-coder / qwen3-coder-local",
+    "code_review": "local-coder / qwen3-coder-local",
+    "traceback": "local-coder / qwen3-coder-local",
+}
 
 
 def local_prep_lane(raw_context: str) -> dict[str, Any]:
@@ -82,7 +107,8 @@ def build_review_packet() -> tuple[dict[str, Any], dict[str, Any]]:
         model_metadata={
             "router": "hermes.local_llm_router",
             "worker_profile": "local-coder",
-            "model_family": "local-code-model",
+            "model_used": CURRENT_ROUTER_MODEL_USED,
+            "lane_model_map": CURRENT_ROUTER_LANE_MODEL_MAP,
             "routing_reason": "code traceback triage stays in a local prep lane",
         },
         exposure=Exposure(
@@ -121,6 +147,23 @@ def build_review_packet() -> tuple[dict[str, Any], dict[str, Any]]:
         reviewer_body,
     )
     measured_report = boundary.report(drop_observed_bodies=True)
+    raw_input_tokens = len(LOCAL_CONTEXT.split())
+    local_output_tokens = len(json.dumps(local_output).split())
+    exposed_to_cloud_tokens = len(reviewer_body.decode("utf-8").split())
+    actual_avoided_cloud_tokens = max(0, raw_input_tokens - local_output_tokens)
+    current_router_compatibility = {
+        "registered_tool": "local_llm_router",
+        "worker_profile": "local-coder",
+        "model_used": CURRENT_ROUTER_MODEL_USED,
+        "lane_model_map": CURRENT_ROUTER_LANE_MODEL_MAP,
+        "raw_context_seen_by_cloud": False,
+        "raw_input_tokens_estimated": raw_input_tokens,
+        "local_output_tokens_estimated": local_output_tokens,
+        "exposed_to_cloud_tokens_estimated": exposed_to_cloud_tokens,
+        "actual_avoided_cloud_tokens": actual_avoided_cloud_tokens,
+        "potential_avoided_cloud_tokens": max(actual_avoided_cloud_tokens, raw_input_tokens),
+        "metric_note": "actual avoided tokens require pre-cloud/local-ingress raw context withholding; normal cloud-planner tool calls are potential savings only",
+    }
     ended_at = datetime.now(timezone.utc)
     duration_ms = max(0.0, (ended_at - started_at).total_seconds() * 1000)
     telemetry = PacketTelemetry(
@@ -143,18 +186,17 @@ def build_review_packet() -> tuple[dict[str, Any], dict[str, Any]]:
             "duration_ms": duration_ms,
         },
         token_accounting={
-            "raw_input_tokens_estimated": len(LOCAL_CONTEXT.split()),
-            "local_output_tokens_estimated": len(json.dumps(local_output).split()),
-            "exposed_to_cloud_tokens_estimated": len(reviewer_body.decode("utf-8").split()),
-            "kept_local_tokens_estimated": max(
-                0, len(LOCAL_CONTEXT.split()) - len(json.dumps(local_output).split())
-            ),
+            "raw_input_tokens_estimated": raw_input_tokens,
+            "local_output_tokens_estimated": local_output_tokens,
+            "exposed_to_cloud_tokens_estimated": exposed_to_cloud_tokens,
+            "kept_local_tokens_estimated": actual_avoided_cloud_tokens,
         },
     )
 
     return {
         "review_packet": packet.to_dict(),
         "packet_telemetry": telemetry.to_dict(),
+        "current_router_compatibility": current_router_compatibility,
         "transport_response": transport_response,
         "hermes_mapping": {
             "local prep lane": "Hermes local-router worker performs code triage only",
