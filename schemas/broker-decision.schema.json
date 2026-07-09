@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/m0ntydad0n/sovereignty/schemas/broker-decision.schema.json",
+  "title": "Sovereignty Broker Decision",
+  "description": "Metadata-only shadow execution-broker decision packet for local-prep / cloud-authority systems. The broker ranks already-policy-eligible backend candidates; it does not execute model calls or authorize side effects.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)^(messages|response|prompt|completion|stdout|stderr|raw_input|raw_output|raw_prompt|worker_output|request_body|response_body|api[_-]?key|token|secret|password|credential|base[_-]?url|endpoint|url|path|local_path|dsn|connection_string)$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "decision_id",
+    "packet_id",
+    "lane",
+    "authority_level",
+    "exposure_origin",
+    "exposure_state",
+    "validator_required",
+    "validator_pass",
+    "execution_mode",
+    "executed",
+    "budget",
+    "selected_backend_id",
+    "eligible_backend_ids",
+    "candidates",
+    "reason_code",
+    "privacy"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "0.1"},
+    "decision_id": {"type": "string", "minLength": 1},
+    "packet_id": {"type": "string", "minLength": 1},
+    "trace_id": {"type": "string", "minLength": 1},
+    "lane": {"type": "string", "minLength": 1},
+    "authority_level": {"type": "string", "pattern": "^A[0-6]$"},
+    "exposure_origin": {
+      "type": "string",
+      "enum": ["precloud_compacted", "postcloud_hint", "local_only", "unknown"]
+    },
+    "exposure_state": {
+      "type": "string",
+      "enum": ["local_only_raw", "compact_cloud", "raw_cloud_allowed", "forbidden_cloud", "unknown"]
+    },
+    "validator_required": {"type": "boolean"},
+    "validator_pass": {"type": "boolean"},
+    "execution_mode": {"type": "string", "enum": ["sync", "async_queue", "shadow_only", "none"]},
+    "executed": {"type": "boolean", "enum": [false]},
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "max_cost_usd"],
+      "properties": {
+        "mode": {"type": "string", "enum": ["sync", "async", "shadow_only"]},
+        "p95_ms": {"type": "integer", "minimum": 0},
+        "p90_ms": {"type": "integer", "minimum": 0},
+        "max_cost_usd": {"type": "number", "minimum": 0},
+        "async_fallback": {"type": "boolean"}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"mode": {"const": "sync"}},
+            "required": ["mode"]
+          },
+          "then": {"required": ["p95_ms"]}
+        }
+      ]
+    },
+    "selected_backend_id": {"anyOf": [{"type": "string"}, {"type": "null"}]},
+    "eligible_backend_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "candidates": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/candidate"}
+    },
+    "async_queue_candidates": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/candidate"}
+    },
+    "reason_code": {"type": "string", "minLength": 1},
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metadata_only", "raw_payload_logged", "local_output_logged"],
+      "properties": {
+        "metadata_only": {"type": "boolean", "const": true},
+        "raw_payload_logged": {"type": "boolean", "const": false},
+        "local_output_logged": {"type": "boolean", "const": false}
+      }
+    },
+    "created_at": {"type": "string", "format": "date-time"}
+  },
+  "$defs": {
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "propertyNames": {
+        "not": {
+          "pattern": "(?i)(messages|response|prompt|completion|stdout|stderr|raw[_-]?input|raw[_-]?output|raw[_-]?prompt|worker[_-]?output|request[_-]?body|response[_-]?body|api[_-]?key|token|secret|password|credential|base[_-]?url|endpoint|url|path|local[_-]?path|dsn|connection[_-]?string)"
+        }
+      },
+      "required": [
+        "backend_id",
+        "provider",
+        "transport",
+        "model",
+        "privacy_class",
+        "authority_class",
+        "p95_ms",
+        "estimated_cost_usd",
+        "eligible",
+        "stage",
+        "reason_codes"
+      ],
+      "properties": {
+        "backend_id": {"type": "string", "minLength": 1},
+        "provider": {"type": "string", "minLength": 1},
+        "transport": {
+          "type": "string",
+          "enum": ["direct_provider", "openrouter", "ollama", "llama_cpp", "local", "other"]
+        },
+        "model": {"type": "string", "minLength": 1},
+        "privacy_class": {
+          "type": "string",
+          "enum": ["local_raw", "redacted_or_compact_cloud", "raw_cloud_allowed", "metadata_only", "unknown"]
+        },
+        "authority_class": {
+          "type": "string",
+          "enum": ["proposal_only", "read_only", "no_side_effects", "unknown"]
+        },
+        "p95_ms": {"type": "integer", "minimum": 0},
+        "estimated_cost_usd": {"type": "number", "minimum": 0},
+        "healthy": {"type": "boolean"},
+        "eligible": {"type": "boolean"},
+        "stage": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "validator_gate",
+              "privacy_gate",
+              "authority_gate",
+              "health_gate",
+              "p95_gate",
+              "async_queue_scored",
+              "price_scored"
+            ]
+          }
+        },
+        "reason_codes": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}
