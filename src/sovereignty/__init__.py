@@ -1,5 +1,6 @@
 __version__ = "0.1.0"
 
+from .broker_decision import validate_broker_decision_dict
 from .exposure import Exposure
 from .exposure_budget import ExposureBudget
 from .guardrails import GuardrailEvent, validate_guardrail_event
@@ -33,6 +34,7 @@ __all__ = [
     "build_error_digest",
     "build_measured_exposure_report",
     "redact_model_metadata",
+    "validate_broker_decision_dict",
     "validate_guardrail_event",
     "validate_lane_health",
     "validate_packet",

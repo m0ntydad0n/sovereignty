@@ -47,4 +47,17 @@ Language-agnostic validators can use:
 
 - `schemas/broker-decision.schema.json`
 
+Public example fixtures live in `examples/contracts/`:
+
+- `broker-decision-privacy-reject.json`
+- `broker-decision-trust-reject.json`
+- `broker-decision-price-selected.json`
+- `broker-decision-fallback-selected.json`
+
 The schema intentionally uses sanitized backend labels. For example, `openrouter:example/cheap-json` may identify a transport class and model family without publishing private account configuration, local endpoints, or provider URLs.
+
+The reference CLI can validate broker decision packets without executing anything:
+
+```bash
+sovereignty validate --schema broker-decision examples/contracts/broker-decision-price-selected.json
+```

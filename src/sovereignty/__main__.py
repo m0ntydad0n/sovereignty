@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from .broker_decision import validate_broker_decision_dict
 from .packet import validate_packet_dict
 from .policy import SovereigntyPolicyError
 from .redaction import redact_model_metadata
@@ -15,8 +16,14 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="sovereignty")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    validate_parser = subparsers.add_parser("validate", help="Validate a review packet JSON file")
-    validate_parser.add_argument("path", help="Path to packet JSON")
+    validate_parser = subparsers.add_parser("validate", help="Validate a public Sovereignty JSON file")
+    validate_parser.add_argument(
+        "--schema",
+        choices=["review-packet", "broker-decision"],
+        default="review-packet",
+        help="Public contract schema to validate",
+    )
+    validate_parser.add_argument("path", help="Path to public contract JSON")
 
     redact_parser = subparsers.add_parser("redact", help="Redact model metadata JSON")
     redact_parser.add_argument("path", help="Path to metadata JSON")
@@ -26,9 +33,14 @@ def main(argv: list[str] | None = None) -> int:
     try:
         data = _read_json(args.path)
         if args.command == "validate":
-            packet = validate_packet_dict(data)
-            _print_json({"ok": True, "packet": packet.to_dict()})
-            return 0
+            if args.schema == "review-packet":
+                packet = validate_packet_dict(data)
+                _print_json({"ok": True, "schema": "review-packet", "packet": packet.to_dict()})
+                return 0
+            if args.schema == "broker-decision":
+                decision = validate_broker_decision_dict(data)
+                _print_json({"ok": True, "schema": "broker-decision", "decision": decision})
+                return 0
         if args.command == "redact":
             _print_json(redact_model_metadata(data))
             return 0

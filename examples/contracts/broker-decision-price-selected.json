@@ -1,0 +1,73 @@
+{
+  "authority_level": "A0",
+  "budget": {
+    "max_cost_usd": 0.01,
+    "mode": "sync",
+    "p95_ms": 8000
+  },
+  "candidates": [
+    {
+      "authority_class": "proposal_only",
+      "backend_id": "direct:example:small-json",
+      "eligible": true,
+      "estimated_cost_usd": 0.002,
+      "healthy": true,
+      "model": "small-json",
+      "p95_ms": 1200,
+      "privacy_class": "redacted_or_compact_cloud",
+      "provider": "example",
+      "reason_codes": [],
+      "stage": [
+        "validator_gate",
+        "privacy_gate",
+        "authority_gate",
+        "health_gate",
+        "p95_gate",
+        "price_scored"
+      ],
+      "transport": "direct_provider"
+    },
+    {
+      "authority_class": "proposal_only",
+      "backend_id": "direct:example:large-json",
+      "eligible": true,
+      "estimated_cost_usd": 0.008,
+      "healthy": true,
+      "model": "large-json",
+      "p95_ms": 2100,
+      "privacy_class": "redacted_or_compact_cloud",
+      "provider": "example",
+      "reason_codes": [],
+      "stage": [
+        "validator_gate",
+        "privacy_gate",
+        "authority_gate",
+        "health_gate",
+        "p95_gate",
+        "price_scored"
+      ],
+      "transport": "direct_provider"
+    }
+  ],
+  "decision_id": "bd_example_price_selected",
+  "eligible_backend_ids": [
+    "direct:example:small-json",
+    "direct:example:large-json"
+  ],
+  "executed": false,
+  "execution_mode": "sync",
+  "exposure_origin": "precloud_compacted",
+  "exposure_state": "compact_cloud",
+  "lane": "code_review",
+  "packet_id": "pkt_example_broker",
+  "privacy": {
+    "local_output_logged": false,
+    "metadata_only": true,
+    "raw_payload_logged": false
+  },
+  "reason_code": "selected_cheapest_eligible_after_gates",
+  "schema_version": "0.1",
+  "selected_backend_id": "direct:example:small-json",
+  "validator_pass": true,
+  "validator_required": true
+}

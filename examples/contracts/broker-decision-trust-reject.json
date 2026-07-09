@@ -1,0 +1,47 @@
+{
+  "authority_level": "A0",
+  "budget": {
+    "max_cost_usd": 0,
+    "mode": "shadow_only"
+  },
+  "candidates": [
+    {
+      "authority_class": "unknown",
+      "backend_id": "hosted:example:write-capable",
+      "eligible": false,
+      "estimated_cost_usd": 0.002,
+      "healthy": true,
+      "model": "write-capable",
+      "p95_ms": 1200,
+      "privacy_class": "redacted_or_compact_cloud",
+      "provider": "example",
+      "reason_codes": [
+        "authority_gate_failed"
+      ],
+      "stage": [
+        "validator_gate",
+        "privacy_gate",
+        "authority_gate"
+      ],
+      "transport": "direct_provider"
+    }
+  ],
+  "decision_id": "bd_example_trust_reject",
+  "eligible_backend_ids": [],
+  "executed": false,
+  "execution_mode": "none",
+  "exposure_origin": "precloud_compacted",
+  "exposure_state": "compact_cloud",
+  "lane": "code_review",
+  "packet_id": "pkt_example_broker",
+  "privacy": {
+    "local_output_logged": false,
+    "metadata_only": true,
+    "raw_payload_logged": false
+  },
+  "reason_code": "authority_gate_failed",
+  "schema_version": "0.1",
+  "selected_backend_id": null,
+  "validator_pass": true,
+  "validator_required": true
+}

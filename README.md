@@ -65,6 +65,7 @@ sovereignty/
   schemas/                # Language-agnostic JSON Schema contracts
   src/sovereignty/        # Reference Python implementation
   examples/hermes/        # Hermes local-router adapter examples
+  examples/contracts/     # Public JSON contract fixtures
   tests/                  # Contract tests
 ```
 
@@ -145,6 +146,12 @@ Validate a packet JSON file:
 sovereignty validate packet.json
 ```
 
+Validate a broker decision JSON file:
+
+```bash
+sovereignty validate --schema broker-decision examples/contracts/broker-decision-price-selected.json
+```
+
 Redact model metadata:
 
 ```bash
@@ -156,6 +163,7 @@ sovereignty redact metadata.json
 Sovereignty's first CLI commands are protocol utilities, not router commands:
 
 - `validate packet.json` validates a review packet and returns a JSON status object.
+- `validate --schema broker-decision broker-decision.json` validates a metadata-only broker decision packet and returns a JSON status object.
 - `redact metadata.json` removes secrets, host-local URLs, and private paths from model metadata.
 
 ## JSON Schema contracts

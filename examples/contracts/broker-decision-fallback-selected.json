@@ -1,0 +1,74 @@
+{
+  "authority_level": "A0",
+  "budget": {
+    "async_fallback": true,
+    "max_cost_usd": 0.02,
+    "mode": "sync",
+    "p95_ms": 1500
+  },
+  "candidates": [
+    {
+      "authority_class": "proposal_only",
+      "backend_id": "direct:example:preferred-json",
+      "eligible": false,
+      "estimated_cost_usd": 0.001,
+      "healthy": true,
+      "model": "preferred-json",
+      "p95_ms": 2400,
+      "privacy_class": "redacted_or_compact_cloud",
+      "provider": "example",
+      "reason_codes": [
+        "p95_gate_failed"
+      ],
+      "stage": [
+        "validator_gate",
+        "privacy_gate",
+        "authority_gate",
+        "health_gate",
+        "p95_gate"
+      ],
+      "transport": "direct_provider"
+    },
+    {
+      "authority_class": "proposal_only",
+      "backend_id": "direct:example:fallback-json",
+      "eligible": true,
+      "estimated_cost_usd": 0.006,
+      "healthy": true,
+      "model": "fallback-json",
+      "p95_ms": 1300,
+      "privacy_class": "redacted_or_compact_cloud",
+      "provider": "example",
+      "reason_codes": [],
+      "stage": [
+        "validator_gate",
+        "privacy_gate",
+        "authority_gate",
+        "health_gate",
+        "p95_gate",
+        "price_scored"
+      ],
+      "transport": "direct_provider"
+    }
+  ],
+  "decision_id": "bd_example_fallback_selected",
+  "eligible_backend_ids": [
+    "direct:example:fallback-json"
+  ],
+  "executed": false,
+  "execution_mode": "sync",
+  "exposure_origin": "precloud_compacted",
+  "exposure_state": "compact_cloud",
+  "lane": "code_review",
+  "packet_id": "pkt_example_broker",
+  "privacy": {
+    "local_output_logged": false,
+    "metadata_only": true,
+    "raw_payload_logged": false
+  },
+  "reason_code": "selected_fallback_after_p95_gate",
+  "schema_version": "0.1",
+  "selected_backend_id": "direct:example:fallback-json",
+  "validator_pass": true,
+  "validator_required": true
+}

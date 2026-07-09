@@ -9,6 +9,7 @@ from jsonschema.exceptions import ValidationError
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "schemas"
+EXAMPLES = ROOT / "examples" / "contracts"
 
 
 def load_schema(name: str) -> dict:
@@ -216,3 +217,53 @@ def test_broker_decision_schema_requires_p95_budget_for_sync_mode():
 
     with pytest.raises(ValidationError, match="p95_ms"):
         validate("broker-decision.schema.json", decision)
+
+
+def test_public_broker_decision_example_fixtures_validate_and_stay_metadata_only():
+    fixture_names = [
+        "broker-decision-privacy-reject.json",
+        "broker-decision-trust-reject.json",
+        "broker-decision-price-selected.json",
+        "broker-decision-fallback-selected.json",
+    ]
+
+    for fixture_name in fixture_names:
+        path = EXAMPLES / fixture_name
+        data = json.loads(path.read_text())
+        validate("broker-decision.schema.json", data)
+        serialized = json.dumps(data, sort_keys=True)
+        assert "raw prompt" not in serialized.lower()
+        assert "/Users/" not in serialized
+        assert "localhost" not in serialized
+        assert "127.0.0.1" not in serialized
+        assert "base_url" not in serialized
+        assert data["executed"] is False
+        assert data["privacy"] == {
+            "metadata_only": True,
+            "raw_payload_logged": False,
+            "local_output_logged": False,
+        }
+
+
+def test_public_broker_decision_example_fixtures_cover_expected_paths():
+    decisions = {
+        path.name: json.loads(path.read_text())
+        for path in EXAMPLES.glob("broker-decision-*.json")
+    }
+
+    assert decisions["broker-decision-privacy-reject.json"]["reason_code"] == "privacy_gate_failed"
+    assert decisions["broker-decision-privacy-reject.json"]["selected_backend_id"] is None
+    assert "price_scored" not in decisions["broker-decision-privacy-reject.json"]["candidates"][0]["stage"]
+
+    assert decisions["broker-decision-trust-reject.json"]["reason_code"] == "authority_gate_failed"
+    assert decisions["broker-decision-trust-reject.json"]["selected_backend_id"] is None
+
+    assert decisions["broker-decision-price-selected.json"]["reason_code"] == "selected_cheapest_eligible_after_gates"
+    assert decisions["broker-decision-price-selected.json"]["selected_backend_id"] in decisions[
+        "broker-decision-price-selected.json"
+    ]["eligible_backend_ids"]
+
+    assert decisions["broker-decision-fallback-selected.json"]["reason_code"] == "selected_fallback_after_p95_gate"
+    assert decisions["broker-decision-fallback-selected.json"]["selected_backend_id"] in decisions[
+        "broker-decision-fallback-selected.json"
+    ]["eligible_backend_ids"]
