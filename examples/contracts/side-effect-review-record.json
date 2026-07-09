@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1",
+  "review_id": "review_public_example_1",
+  "packet_id": "pkt_public_example_1",
+  "effect_id": "fx_public_example_1",
+  "review_decision": "needs_human",
+  "reviewer_type": "policy",
+  "reviewed_at": "2026-07-09T16:00:03Z",
+  "execution_status": "not_executed",
+  "authority_tool": "github",
+  "notes_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+}

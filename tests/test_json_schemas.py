@@ -219,30 +219,64 @@ def test_broker_decision_schema_requires_p95_budget_for_sync_mode():
         validate("broker-decision.schema.json", decision)
 
 
-def test_public_broker_decision_example_fixtures_validate_and_stay_metadata_only():
-    fixture_names = [
+PUBLIC_CONTRACT_FIXTURES = {
+    "exposure.schema.json": ["exposure.json"],
+    "side-effect-proposal.schema.json": ["side-effect-proposal.json"],
+    "review-packet.schema.json": ["review-packet.json"],
+    "measured-exposure-report.schema.json": ["measured-exposure-report.json"],
+    "packet-telemetry.schema.json": ["packet-telemetry.json"],
+    "side-effect-review-record.schema.json": ["side-effect-review-record.json"],
+    "policy.schema.json": ["policy.json"],
+    "guardrail-event.schema.json": ["guardrail-event.json"],
+    "lane-health.schema.json": ["lane-health.json"],
+    "exposure-budget.schema.json": ["exposure-budget.json"],
+    "broker-decision.schema.json": [
         "broker-decision-privacy-reject.json",
         "broker-decision-trust-reject.json",
         "broker-decision-price-selected.json",
         "broker-decision-fallback-selected.json",
-    ]
+    ],
+}
 
-    for fixture_name in fixture_names:
-        path = EXAMPLES / fixture_name
-        data = json.loads(path.read_text())
-        validate("broker-decision.schema.json", data)
-        serialized = json.dumps(data, sort_keys=True)
-        assert "raw prompt" not in serialized.lower()
-        assert "/Users/" not in serialized
-        assert "localhost" not in serialized
-        assert "127.0.0.1" not in serialized
-        assert "base_url" not in serialized
-        assert data["executed"] is False
-        assert data["privacy"] == {
-            "metadata_only": True,
-            "raw_payload_logged": False,
-            "local_output_logged": False,
-        }
+FORBIDDEN_PUBLIC_FIXTURE_STRINGS = [
+    "/Users/",
+    "localhost",
+    "127.0.0.1",
+    "base_url",
+    "api_key",
+    "raw prompt",
+    "request_body",
+    "response_body",
+]
+
+
+def test_every_public_schema_has_a_public_contract_fixture():
+    schema_names = {path.name for path in SCHEMAS.glob("*.schema.json")}
+
+    assert schema_names == set(PUBLIC_CONTRACT_FIXTURES)
+
+    for fixture_names in PUBLIC_CONTRACT_FIXTURES.values():
+        for fixture_name in fixture_names:
+            assert (EXAMPLES / fixture_name).exists(), fixture_name
+
+
+def test_public_contract_example_fixtures_validate_and_stay_metadata_only():
+    for schema_name, fixture_names in PUBLIC_CONTRACT_FIXTURES.items():
+        for fixture_name in fixture_names:
+            path = EXAMPLES / fixture_name
+            data = json.loads(path.read_text())
+            validate(schema_name, data)
+            serialized = json.dumps(data, sort_keys=True).lower()
+            for forbidden in FORBIDDEN_PUBLIC_FIXTURE_STRINGS:
+                assert forbidden.lower() not in serialized, fixture_name
+
+            if schema_name == "broker-decision.schema.json":
+                assert data["executed"] is False
+                assert data["privacy"] == {
+                    "metadata_only": True,
+                    "raw_payload_logged": False,
+                    "local_output_logged": False,
+                }
 
 
 def test_public_broker_decision_example_fixtures_cover_expected_paths():

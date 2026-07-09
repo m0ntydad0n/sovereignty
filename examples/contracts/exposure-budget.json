@@ -1,0 +1,11 @@
+{
+  "schema_version": "0.1",
+  "budget_id": "budget_public_example_1",
+  "max_cloud_exposure_classification": "summary",
+  "max_exposed_tokens_estimated": 500,
+  "max_raw_cloud_tokens_per_run": 0,
+  "max_unmeasured_packets_per_day": 0,
+  "max_side_effect_proposals_per_packet": 3,
+  "max_local_latency_ms": 5000,
+  "require_measured_for_privacy_claims": true
+}

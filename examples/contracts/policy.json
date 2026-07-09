@@ -1,0 +1,29 @@
+{
+  "schema_version": "0.1",
+  "policy_id": "policy_public_example_1",
+  "trusted_verifier_ids": [
+    "sovereignty.recording_proxy.example.v0"
+  ],
+  "max_cloud_exposure_classification": "summary",
+  "require_measured_exposure_for_privacy_claims": true,
+  "trusted_metadata_origins": [
+    "authority",
+    "verifier"
+  ],
+  "forbidden_client_metadata_keys": [
+    "credential_header",
+    "password",
+    "private_host",
+    "connection_reference"
+  ],
+  "forbidden_side_effect_types": [
+    "payment",
+    "trade",
+    "deploy"
+  ],
+  "risk_floor_by_effect_type": {
+    "create_issue": "medium",
+    "send_message": "medium",
+    "publish": "high"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "0.1",
+  "trust_model": "measured",
+  "classification": "summary",
+  "verifier_id": "sovereignty.recording_proxy.example.v0",
+  "observed_request_count": 1,
+  "transmitted_byte_count": 512,
+  "evidence": {
+    "local_input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "request_digests": [
+      "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    ],
+    "observed_methods": [
+      "POST"
+    ],
+    "observed_url_schemes": [
+      "https"
+    ]
+  },
+  "limitations": [
+    "Example report uses digests and transport metadata only; raw content is not included."
+  ]
+}

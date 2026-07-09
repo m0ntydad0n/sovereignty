@@ -1,0 +1,9 @@
+{
+  "schema_version": "0.1",
+  "lane": "contract_review",
+  "status": "healthy",
+  "checked_at": "2026-07-09T16:00:00Z",
+  "latency_ms": 950,
+  "last_success_at": "2026-07-09T15:59:30Z",
+  "concurrency_limit": 2
+}

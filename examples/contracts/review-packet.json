@@ -1,0 +1,41 @@
+{
+  "schema_version": "0.1",
+  "packet_id": "pkt_public_example_1",
+  "lane": "contract_review",
+  "action": "summarize_validation_result",
+  "local_output": {
+    "summary": "Public contract validation completed with one metadata-only recommendation.",
+    "recommendation_count": 1
+  },
+  "model_metadata": {
+    "provider": "example-provider",
+    "model": "example-model-small",
+    "worker_profile": "contract-reviewer"
+  },
+  "exposure": {
+    "classification": "summary",
+    "trust_model": "measured",
+    "evidence": {
+      "report_id": "measured-exposure-report-example",
+      "metadata_only": true
+    }
+  },
+  "side_effects": [
+    {
+      "effect_id": "fx_public_example_1",
+      "effect_type": "create_issue",
+      "tool": "github",
+      "intent": "open a reviewed follow-up issue after human approval",
+      "target": {
+        "kind": "repository",
+        "label": "example/protocol-consumer"
+      },
+      "payload": {
+        "title": "Review public contract mismatch",
+        "body_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "risk": "medium"
+    }
+  ],
+  "review_required": true
+}

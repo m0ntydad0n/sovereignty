@@ -8,6 +8,8 @@ All notable public protocol changes will be recorded here.
 
 - Broker decision CLI validation via `sovereignty validate --schema broker-decision`.
 - Public broker decision JSON fixtures for privacy reject, authority reject, price-selected, and fallback-selected paths.
+- Public JSON fixtures covering every contract schema.
+- Private-router implementation consumption guidance for validating exported metadata-only packets without publishing live wiring.
 
 ## [0.1.0] - 2026-07-09
 

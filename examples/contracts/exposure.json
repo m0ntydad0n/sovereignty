@@ -1,0 +1,8 @@
+{
+  "classification": "summary",
+  "trust_model": "measured",
+  "evidence": {
+    "report_id": "measured-exposure-report-example",
+    "metadata_only": true
+  }
+}

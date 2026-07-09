@@ -1,0 +1,36 @@
+{
+  "schema_version": "0.1",
+  "run_id": "run_public_example_1",
+  "packet_id": "pkt_public_example_1",
+  "trace_id": "trace_public_example_1",
+  "adapter": "public-contract-example",
+  "lane": "contract_review",
+  "action": "summarize_validation_result",
+  "status": "success",
+  "status_fields": {
+    "local_lane_status": "success",
+    "guardrail_status": "success",
+    "exposure_status": "measured",
+    "side_effect_status": "proposed_pending_review"
+  },
+  "timing": {
+    "started_at": "2026-07-09T16:00:00Z",
+    "ended_at": "2026-07-09T16:00:02Z",
+    "duration_ms": 2000
+  },
+  "token_accounting": {
+    "raw_input_tokens_estimated": 1200,
+    "local_output_tokens_estimated": 180,
+    "exposed_to_cloud_tokens_estimated": 140,
+    "kept_local_tokens_estimated": 1060
+  },
+  "privacy": {
+    "metadata_only": true,
+    "raw_payload_logged": false,
+    "local_output_logged": false
+  },
+  "cost_accounting": {
+    "estimated_usd": 0.002,
+    "billable": false
+  }
+}

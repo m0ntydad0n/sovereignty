@@ -1,0 +1,15 @@
+{
+  "effect_id": "fx_public_example_1",
+  "effect_type": "create_issue",
+  "tool": "github",
+  "intent": "open a reviewed follow-up issue after human approval",
+  "target": {
+    "kind": "repository",
+    "label": "example/protocol-consumer"
+  },
+  "payload": {
+    "title": "Review public contract mismatch",
+    "body_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "risk": "medium"
+}

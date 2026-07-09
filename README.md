@@ -58,6 +58,7 @@ sovereignty/
   docs/policy.md            # Policy-origin validation and exposure/side-effect gates
   docs/operations.md        # Guardrail events and lane health records
   docs/broker-decision.md   # Metadata-only execution broker decision packets
+  docs/implementation-consumption.md # How private routers consume public contracts
   docs/protocol-not-gateway.md # Why this is a protocol, not a gateway
   docs/public-private-boundary.md # What belongs in public vs private implementations
   docs/current-router-compatibility.md # Current Hermes local-router adapter boundary
@@ -182,7 +183,7 @@ Language-agnostic schemas live in `schemas/`:
 - `schemas/exposure-budget.schema.json`
 - `schemas/broker-decision.schema.json`
 
-These schemas mirror the v0.1 protocol surface for non-Python validators and integrations. Packet telemetry is documented in `docs/telemetry.md` and is metadata-only by default. Side-effect review records are documented in `docs/side-effect-review.md` and remain separate from local-lane side-effect proposals. Policy-origin validation and exposure budgets are documented in `docs/policy.md`. Guardrail events and lane health are documented in `docs/operations.md`. Broker decisions are documented in `docs/broker-decision.md`; the public/private boundary is documented in `docs/public-private-boundary.md`.
+These schemas mirror the v0.1 protocol surface for non-Python validators and integrations. Public JSON fixtures live in `examples/contracts/` and are tested against every schema. Packet telemetry is documented in `docs/telemetry.md` and is metadata-only by default. Side-effect review records are documented in `docs/side-effect-review.md` and remain separate from local-lane side-effect proposals. Policy-origin validation and exposure budgets are documented in `docs/policy.md`. Guardrail events and lane health are documented in `docs/operations.md`. Broker decisions are documented in `docs/broker-decision.md`; the public/private boundary is documented in `docs/public-private-boundary.md`; private-router consumption guidance is documented in `docs/implementation-consumption.md`.
 
 ## Release path
 
