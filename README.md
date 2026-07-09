@@ -1,5 +1,11 @@
 # Sovereignty
 
+[![PyPI version](https://img.shields.io/pypi/v/sovereignty-protocol.svg)](https://pypi.org/project/sovereignty-protocol/)
+[![Python versions](https://img.shields.io/pypi/pyversions/sovereignty-protocol.svg)](https://pypi.org/project/sovereignty-protocol/)
+[![Tests](https://github.com/m0ntydad0n/sovereignty/actions/workflows/tests.yml/badge.svg)](https://github.com/m0ntydad0n/sovereignty/actions/workflows/tests.yml)
+[![Release](https://img.shields.io/github/v/release/m0ntydad0n/sovereignty)](https://github.com/m0ntydad0n/sovereignty/releases/tag/v0.1.0)
+[![License](https://img.shields.io/github/license/m0ntydad0n/sovereignty)](LICENSE)
+
 ```text
                          .-.
                         /___\
@@ -93,20 +99,24 @@ That is the positioning wedge: LiteLLM, Portkey, and RouteLLM are useful gateway
 
 ## Quick start
 
+Install the public protocol package from PyPI:
+
+```bash
+python3 -m pip install sovereignty-protocol
+python3 -c "import sovereignty; print(sovereignty.__version__)"
+sovereignty --help
+```
+
+The PyPI distribution name is `sovereignty-protocol` because `sovereignty` is already taken on PyPI. The import package and CLI command remain `sovereignty`.
+
+Install from a local checkout for development:
+
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install --upgrade pip
 .venv/bin/python -m pip install -e '.[dev]'
 .venv/bin/python -m pytest tests -q
-```
-
-The PyPI distribution name is `sovereignty-protocol` because `sovereignty` is already taken on PyPI. The import package and CLI command remain `sovereignty`.
-
-Install from a local checkout:
-
-```bash
-python3 -m pip install -e .
-sovereignty --help
+.venv/bin/sovereignty --help
 ```
 
 Create a basic review packet:
