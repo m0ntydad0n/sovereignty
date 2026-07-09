@@ -67,6 +67,26 @@ def test_real_hermes_local_router_example_emits_valid_packet_telemetry():
     }
 
 
+def test_real_hermes_local_router_example_emits_valid_broker_decision():
+    payload = _run_example()
+    decision = payload["broker_decision"]
+
+    _validate_schema("broker-decision.schema.json", decision)
+    assert decision["packet_id"] == payload["review_packet"]["packet_id"]
+    assert decision["executed"] is False
+    assert decision["budget"]["p95_ms"] == 8000
+    assert decision["selected_backend_id"] == "direct:example:small-json"
+
+    rejected = next(
+        candidate
+        for candidate in decision["candidates"]
+        if candidate["backend_id"] == "openrouter:example/cheap-json"
+    )
+    assert rejected["eligible"] is False
+    assert "privacy_gate_failed" in rejected["reason_codes"]
+    assert "price_scored" not in rejected["stage"]
+
+
 def test_real_hermes_local_router_example_telemetry_contains_no_raw_input_or_local_output():
     payload = _run_example()
     rendered = json.dumps(payload["packet_telemetry"], sort_keys=True)
