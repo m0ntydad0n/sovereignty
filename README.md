@@ -36,7 +36,9 @@ Sovereignty is not an LLM gateway. It is a contract for local-prep / cloud-autho
 
 ## Status
 
-Early v0.1 scaffold. The current goal is a small, falsifiable core: schema, policy checks, metadata redaction, a sober threat model, and one Hermes adapter example.
+v0.1.0 protocol release. The public surface is intentionally small and falsifiable: schema contracts, policy checks, metadata redaction, measured exposure reporting, side-effect review boundaries, a sober threat model, and Hermes adapter examples.
+
+Sovereignty is still not a router or gateway. The private router implementation can evolve independently; this repository publishes the boundary contract local-prep systems must satisfy before an authority-bearing agent acts.
 
 ## Repository layout
 
