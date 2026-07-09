@@ -42,3 +42,45 @@ def test_release_checklist_documents_v010_path_and_name_strategy():
         "sovereignty --help",
     ]:
         assert phrase in text
+
+
+def test_pypi_publish_workflow_uses_trusted_publishing_not_stored_tokens():
+    workflow = ROOT / ".github" / "workflows" / "publish.yml"
+
+    assert workflow.exists()
+    text = workflow.read_text()
+    for phrase in [
+        "id-token: write",
+        "pypa/gh-action-pypi-publish@release/v1",
+        "environment: pypi",
+        "environment: testpypi",
+        "repository-url: https://test.pypi.org/legacy/",
+        "workflow_dispatch",
+        "release:",
+        "types: [published]",
+    ]:
+        assert phrase in text
+
+    forbidden_phrases = [
+        "TWINE_PASSWORD",
+        "TWINE_USERNAME",
+        "__token__",
+        "password:",
+        "api-token",
+    ]
+    for phrase in forbidden_phrases:
+        assert phrase not in text
+
+
+def test_release_checklist_documents_trusted_publishing_setup():
+    text = (ROOT / "docs" / "release-checklist.md").read_text()
+
+    for phrase in [
+        "Trusted Publishing",
+        "environment name `pypi`",
+        "environment name `testpypi`",
+        ".github/workflows/publish.yml",
+        "no Twine API token",
+        "workflow_dispatch",
+    ]:
+        assert phrase in text

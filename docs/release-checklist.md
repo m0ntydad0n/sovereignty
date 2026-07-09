@@ -59,19 +59,40 @@ sovereignty --help
    git push origin v0.1.0
    ```
 
-2. Publish to TestPyPI first if credentials are configured:
+2. Configure PyPI/TestPyPI Trusted Publishing for `.github/workflows/publish.yml`.
+   Use no Twine API token in GitHub secrets or local files when trusted publishing is available.
+
+   Required publisher settings:
+
+   - owner/repository: `m0ntydad0n/sovereignty`
+   - workflow file: `.github/workflows/publish.yml`
+   - environment name `testpypi` for TestPyPI
+   - environment name `pypi` for PyPI
+   - package/project name: `sovereignty-protocol`
+
+3. Publish to TestPyPI first from GitHub Actions:
+
+   - open the `Publish Python package` workflow;
+   - run `workflow_dispatch` with repository `testpypi`;
+   - verify the `testpypi` environment is used;
+   - verify fresh install/import/CLI from TestPyPI.
+
+4. Publish to PyPI after TestPyPI install/import/CLI verification:
+
+   - publish a GitHub release, or run `workflow_dispatch` with repository `pypi`;
+   - verify the `pypi` environment is used;
+   - verify fresh install/import/CLI from PyPI.
+
+5. Manual fallback only if trusted publishing cannot be configured:
 
    ```bash
    python -m twine upload --repository testpypi dist/*
-   ```
-
-3. Publish to PyPI after TestPyPI install/import/CLI verification:
-
-   ```bash
    python -m twine upload dist/*
    ```
 
-4. Create the GitHub release for `v0.1.0` with notes that call out:
+   Use scoped, project-specific credentials only; do not commit `.pypirc`, tokens, or local credential files.
+
+6. Create the GitHub release for `v0.1.0` with notes that call out:
    - review packet validation;
    - metadata redaction;
    - measured exposure reports and recording boundary;
